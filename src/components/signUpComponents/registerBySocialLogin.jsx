@@ -67,7 +67,7 @@ export const RegisterBySocialLogin = () => {
             
             if (response.data.error == null) {
                 await notify("회원가입 성공에 성공했습니다.");
-                navigate('/login');
+                navigate('/');
             } else {
                 await notify("회원가입에 실패했습니다.", 'error');
             }

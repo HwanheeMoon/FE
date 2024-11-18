@@ -16,7 +16,10 @@ export const SignUpComponents = () => {
     const [detailAdr, setDetailAddress] = useState("");
     const [zipcode, setZipCode] = useState("");
     const navigate = useNavigate();
-    const [checkEmail, setCheckEmail] = useState("중복확인 하십시오.");
+    const [checkEmail, setCheckEmail] = useState({
+        comment : "중복확인 하십시오.",
+        state : false
+    });
     const [isProcessing, setIsPrecessing] = useState(true);
 
     const notify = async (data, state) => {
@@ -48,18 +51,31 @@ export const SignUpComponents = () => {
                 await notify("이메일을 입력하십시오.", 'error');
                 return;
             }
-            const response = await axios.get(`http://localhost:8080/api/user/check/email/${email}`)
-            if (response.data) {
-                setCheckEmail("사용 가능한 이메일 입니다.")
+            const response = await axiosInstance.get(`/api/user/check/email/${email}`);
+            //console.log(response.data)
+            if (response.data.data) {
+                notify("사용 가능한 이메일 입니다.", 'success')
+                setCheckEmail({
+                    comment : "",
+                    state: true
+                })
             } else {
-                await notify("해당 이메일이 이미 존재합니다.", 'error')
-                return;
+                setCheckEmail({
+                    comment : "이미 존재하는 이메일 입니다.",
+                    state: false
+                })
             }
         }
 
         const handleSignup = async () => {
             setIsPrecessing(false);
             try {
+                if(checkEmail.state === false) {
+                    await notify("중복확인 해주세요.", "error");
+                    setIsPrecessing(true);
+                    return;
+                }
+
                 if (!email || !password || !passwordCheck || !name || !phone || !streetAdr) {
                     await notify('모든 정보를 입력하세요.', 'error');
                     setIsPrecessing(true);
@@ -82,7 +98,7 @@ export const SignUpComponents = () => {
                     zipcode
                 };
 
-                const response = await axiosInstance.post('http://localhost:8080/api/user/signup', userData);
+                const response = await axiosInstance.post('/api/user/signup', userData);
                 if (response.status === 200) {
                     await notify("회원가입 성공에 성공했습니다.");
                     navigate('/login');
@@ -136,13 +152,16 @@ export const SignUpComponents = () => {
                             <img className="w-24" src="/images/logo3.png" alt="logo"/>
                         </div>
                         <div className="flex text-sm rounded-md flex-col gap-x-4">
-                            <div className="flex-row max-w-96 mb-5 items-center justify-between">
+                            <div className="flex-row max-w-96 mb-1 items-center justify-between">
                                 <input
                                     className="w-7/12 mr-4 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500"
                                     type="text" placeholder="이메일" value={email}
                                     onChange={(e) => setEmail(e.target.value)}/>
                                 <button className="btn btn-sm w-24 h-10" onClick={handleCheck}>중복 확인</button>
                             </div>
+                            <p className={`${checkEmail.state ? 'text-green-500 mb-4' : 'text-red-500'} mb-2`}>
+                                {checkEmail.comment}
+                            </p>
 
                             <input
                                 className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500"

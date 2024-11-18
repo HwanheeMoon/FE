@@ -51,13 +51,13 @@ export const Navigationbar = ({ cart }) => {
         <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
             <div className="flex w-full justify-between items-center space-x-5">
                 <Link to="/">
-                    <img src="/images/logo3.png" alt="logo" className="xl:h-20 xl:w-20 lg:h-10 lg:w-10 w-10"/>
+                    <img src="/images/logo3.png" alt="logo" className="xl:h-20 p-0.5 lg:p-3 xl:w-20 lg:h-10 lg:w-10 w-10"/>
                 </Link>
                 <div className="flex relative lg:max-w-xl lg:w-full h-10 items-center justify-center">
                     <input
                         type="text"
                         placeholder="상품을 검색해보세요 !"
-                        className="input input-bordered size-10 text-xs input-success w-full lg:max-w-96"
+                        className="input input-bordered size-10 text-xs lg:text-lg input-success w-full lg:max-w-96"
                         value={query} // query 상태와 연결
                         onChange={handleInputChange}
                     />
