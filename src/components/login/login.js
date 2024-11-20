@@ -23,6 +23,14 @@ export const Login = () => {
             autoClose :1500,
             className:'mx-auto w-80 lg:w-96 my-8 lg:my-auto',
         })
+
+    const notifyCheck = () => toast.error("이메일 혹은 비밀번호가 맞지 않습니다.",
+        {
+            position: "top-center",
+            hideProgressBar:true,
+            autoClose :1500,
+            className:'mx-auto w-80 lg:w-96 my-8 lg:my-auto',
+        })
     const handlerLogin = () => {
 
         if (email.length === 0 || password.length === 0) {
@@ -45,7 +53,7 @@ export const Login = () => {
                 navigate("/");
 
             }).catch(err => {
-                notify();
+                notifyCheck();
         })
     };
 
