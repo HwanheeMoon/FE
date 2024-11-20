@@ -8,5 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jquery-latest" level="application" />
+    <orderEntry type="library" name="iamport" level="application" />
+    <orderEntry type="library" name="iamport.payment-1.1.7" level="application" />
   </component>
 </module>
